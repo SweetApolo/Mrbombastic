@@ -22,7 +22,37 @@ bool clavesIguales(char *claveRecibida,char *claveCorrecta){
 
 //Tarea 1 que va a controlar toda la bomba, modo config y modo activada
 void task1(){
-  
+  static char claveCorrecta[6] = {'d', 'u', 'd', 'd', 'u', 'a'};
+  static char claveIntroducida[6];
+  static int digitosIngresados = 0;
+  static int estado = 1;
+  static int tiempo = 20;
+  static uint32_t previousMillis = 0;
+  unsigned long currentMillis = millis();
+  const uint32_t interval = 1000;
+
+  switch (estado) {
+        //En estado 1 estamos en modo Config
+        //U para aumentar el tiempo, no pasa mas de 60 segundos
+        //D para disminuir el tiempo, no pasa menos de 10 segundos
+        //A para armar la bomba y cambiar al estado 2
+    case 1:{
+      if (Serial.available() > 0){
+        char letra = Serial.read();
+        if((char) letra == 'u' && tiempo < 60){
+          tiempo++;
+          Serial.println(tiempo);
+        } else if((char) letra == 'd' && tiempo >10){
+          tiempo--;
+          Serial.println(tiempo);
+        } else if((char) letra == 'a'){
+          estado = 2;
+          previousMillis = millis();
+          digitosIngresados = 0;
+        }
+      }
+      break;
+    }
 }
 
 //Codigo clasico para tecnica no bloqueante
