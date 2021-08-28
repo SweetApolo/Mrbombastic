@@ -53,6 +53,26 @@ void task1(){
       }
       break;
     }
+
+    //Cuando cambia a estado 2 el tiempo empieza la cuenta atras
+    case 2: {
+      if(Serial.available() > 0){
+        //Con esto vamos a poner la clave
+        claveIntroducida[digitosIngresados] = Serial.read();
+        digitosIngresados++;
+        Serial.println("Digito Ingresado");
+
+        if(digitosIngresados == 6){
+          //Si la clave que ponemos ta buena la bomba se desactiva
+          Serial.println("Revisando clave");
+          if(clavesIguales(claveCorrecta, claveIntroducida)){
+            Serial.println("Bomba Desactivada SIUUU");
+            estado = 1; //se vuelve al estado 1 modo config
+            tiempo = 20;//Si se desactiva el timer vuelve a 20segundos
+          }
+          digitosIngresados = 0;
+        }
+      }
 }
 
 //Codigo clasico para tecnica no bloqueante
