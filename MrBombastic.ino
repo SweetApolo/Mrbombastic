@@ -45,21 +45,15 @@ void task1(){
       if (Serial.available() > 0) {
           int dataRx = Serial.read();
 
-          if (dataRx == 'u')
+          if (dataRx == 'u' && tiempo < 60)
           {
-            if (tiempo < 60)
-            {
               tiempo++;
-              Serial.println(tiempo);
-            }
+              Serial.println(tiempo);  
           }
-          else if (dataRx == 'd')
+          else if (dataRx == 'd' && tiempo > 10)
           {
-            if (tiempo > 10)
-            {
               tiempo--;
-              Serial.println(tiempo);
-            }
+              Serial.println(tiempo);  
           }
           else if (dataRx == 'a')
           {
