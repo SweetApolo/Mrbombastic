@@ -27,7 +27,30 @@ void task1(){
 
 //Codigo clasico para tecnica no bloqueante
 void task2(){
-  
+  static const uint8_t ledPin = 3;
+  static uint8_t ledState = LOW;
+  static uint32_t interval = 500;
+  static uint32_t previousMillis = 0;
+  static bool taskInit = false;
+
+  if (taskInit == false){
+    pinMode(ledPin, OUTPUT);
+    taskInit = true;
+  }
+
+  uint32_t currentMillis = millis();
+
+  if ((currentMillis - previousMillis) >= interval) {
+    previousMillis = currentMillis;
+
+    if (ledState == LOW){
+      ledState = HIGH;
+    } else {
+      ledState = LOW;
+    }
+
+    digitalWrite(ledPin, ledState);
+  }
 }
 
 void loop(){
