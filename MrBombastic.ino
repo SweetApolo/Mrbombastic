@@ -73,7 +73,28 @@ void task1(){
           digitosIngresados = 0;
         }
       }
+
+      if((millis() - previousMillis) >= interval){
+        previousMillis = millis();
+
+        if (tiempo > 0){
+          tiempo--;
+          Serial.println(tiempo);
+        } else{
+          //Si el timer llega a 0 la bomba explota boom
+          Serial.println("BOOOOOOOM *Sonidos de explosion* F");
+          estado = 1; //Se vuelve al estado 1 modo config
+          tiempo = 20;//Si explota el timepo vuelve a 20segundos
+        }
+      }
+      break;
+    }
+    default:
+      Serial.println("ERROR");
+      break;
+  }
 }
+
 
 //Codigo clasico para tecnica no bloqueante
 void task2(){
