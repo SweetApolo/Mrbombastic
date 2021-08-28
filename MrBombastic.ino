@@ -124,6 +124,8 @@ void task2(){
   }
 }
 
+
+//Para ejecutar las tareas
 void loop(){
   task1();
   task2();
