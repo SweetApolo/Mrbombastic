@@ -1,9 +1,10 @@
 void setup(){
   
   Serial.begin(115200);
-  
+ 
 }
 
+//funcion bool para las claves
 bool clavesIguales(char *claveRecibida,char *claveCorrecta){
   int ok = 0;
 
@@ -27,32 +28,48 @@ void task1(){
   static int digitosIngresados = 0;
   static int estado = 1;
   static int tiempo = 20;
+  
   static uint32_t previousMillis = 0;
   unsigned long currentMillis = millis();
   const uint32_t interval = 1000;
 
   switch (estado) {
+    
         //En estado 1 estamos en modo Config
         //U para aumentar el tiempo, no pasa mas de 60 segundos
         //D para disminuir el tiempo, no pasa menos de 10 segundos
         //A para armar la bomba y cambiar al estado 2
     case 1:{
-      if (Serial.available() > 0){
-        char letra = Serial.read();
-        if((char) letra == 'u' && tiempo < 60){
-          tiempo++;
-          Serial.println(tiempo);
-        } else if((char) letra == 'd' && tiempo >10){
-          tiempo--;
-          Serial.println(tiempo);
-        } else if((char) letra == 'a'){
-          estado = 2;
-          previousMillis = millis();
-          digitosIngresados = 0;
+
+      
+      if (Serial.available() > 0) {
+          int dataRx = Serial.read();
+
+          if (dataRx == 'u')
+          {
+            if (tiempo < 60)
+            {
+              tiempo++;
+              Serial.println(tiempo);
+            }
+          }
+          else if (dataRx == 'd')
+          {
+            if (tiempo > 10)
+            {
+              tiempo--;
+              Serial.println(tiempo);
+            }
+          }
+          else if (dataRx == 'a')
+          {
+            estado = 2;
+            previousMillis = millis();
+            digitosIngresados = 0;
+          }
         }
+        break;
       }
-      break;
-    }
 
     //Cuando cambia a estado 2 el tiempo empieza la cuenta atras
     case 2: {
@@ -74,6 +91,7 @@ void task1(){
         }
       }
 
+      //Cuenta regresiva BOOM
       if((millis() - previousMillis) >= interval){
         previousMillis = millis();
 
